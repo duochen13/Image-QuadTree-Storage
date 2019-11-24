@@ -30,4 +30,21 @@ def construct_quad_tree(matrix, err):
     return construct_helper(0, 0, len(matrix))
 
 def convertFromTreeToMatrix(node, size):
-    pass
+    matrix = [[0 for _ in range(size)] for _ in range(size)]
+    def recover(node, x, y, size):
+        nonlocal matrix
+        if not node:
+            return
+        if node.isLeaf:
+            for i in range(x, x + size):
+                for j in range(y, y + size):
+                    matrix[i][j] = node.val
+            return
+        size = size // 2
+        recover(node.topLeft, x, y, size)
+        recover(node.topRight, x, y + size, size)
+        recover(node.bottomLeft, x + size, y, size)
+        recover(node.bottomRight, x + size, y + size, size)    
+    recover(node, 0, 0, size)
+    return matrix
+
