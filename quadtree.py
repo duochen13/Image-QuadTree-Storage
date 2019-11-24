@@ -29,4 +29,5 @@ def construct_quad_tree(matrix, err):
         return QuadTree(-1, False, tl, tr, bl, br)      
     return construct_helper(0, 0, len(matrix))
 
-    
+def convertFromTreeToMatrix(node, size):
+    pass
