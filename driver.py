@@ -1,4 +1,6 @@
 import imageio
+from PIL import Image
+import numpy as np
 from helper import print_quad_tree_iterative, print_quad_tree_recursive
 from quadtree import construct_quad_tree, convertFromTreeToMatrix
 
@@ -32,7 +34,7 @@ img_layer_1 = img_layer_1[:,:N]
 img_layer_2 = img_layer_2[:,:N]
 
 
-err = 10
+err = 0
 img_layer_0_quadtree = construct_quad_tree(img_layer_0, err)
 img_layer_1_quadtree = construct_quad_tree(img_layer_1, err)
 img_layer_2_quadtree = construct_quad_tree(img_layer_2, err)
@@ -41,8 +43,8 @@ img_layer_0_recover = convertFromTreeToMatrix(img_layer_0_quadtree, N)
 img_layer_1_recover = convertFromTreeToMatrix(img_layer_1_quadtree, N)
 img_layer_2_recover = convertFromTreeToMatrix(img_layer_2_quadtree, N)
 
-created_img = [[[0 for _ in range(4)] for _ in range(N)] for _ in range(N)]
-for k in range(4):
+created_img = [[[255 for _ in range(3)] for _ in range(N)] for _ in range(N)]
+for k in range(3):
     if k == 0:
         for i in range(N):
             for j in range(N):
@@ -55,20 +57,19 @@ for k in range(4):
         for i in range(N):
             for j in range(N):
                 created_img[i][j][k] = img_layer_2_recover[i][j]
-    else:
-        for i in range(N):
-            for j in range(N):
-                created_img[i][j][k] = 255
+    # else:
+    #     for i in range(N):
+    #         for j in range(N):
+    #             created_img[i][j][k] = 255
 
+# print("first row layer====")
+# print(img_layer_0[0][:20])
+# print("=================")
+# print(img_layer_0_recover[0][:20])
 
-
-# num_full_nodes, total_nodes = print_quad_tree_iterative(img_layer_0_quadtree)
-# num_full_nodes, total_nodes, err
-# 
-# 65470 87313 1
-# 65173 87002 3
-# 65108 86933 4
-# 64951 86770 5
-# 64489 86257 10
-# print(num_full_nodes, total_nodes) # 64951 86770 5
+data_np = np.asarray(created_img)
+actual_img = Image.fromarray(data_np, 'RGB')
+# actual_img = Image.fromarray(np.asarray(img[:,:,:3]), 'RGB')
+actual_img.save('telsajoke_recover.png')
+actual_img.show()
 

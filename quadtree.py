@@ -24,13 +24,14 @@ def construct_quad_tree(matrix, err):
         tr = construct_helper(x, y + size, size)
         bl = construct_helper(x + size, y, size)
         br = construct_helper(x + size, y + size, size)
-        if tl.isLeaf and tr.isLeaf and bl.isLeaf and br.isLeaf and abs(tl.val - tr.val) < err and abs(tr.val - bl.val) < err and abs(bl.val -- br.val) < err:
+        # if tl.isLeaf and tr.isLeaf and bl.isLeaf and br.isLeaf and abs(tl.val - tr.val) < err and abs(tr.val - bl.val) < err and abs(bl.val -- br.val) < err:
+        if tl.isLeaf and tr.isLeaf and bl.isLeaf and br.isLeaf and tl.val == tr.val and tr.val == bl.val and bl.val == br.val:
             return QuadTree(tl.val, True, None, None, None, None)
         return QuadTree(-1, False, tl, tr, bl, br)      
     return construct_helper(0, 0, len(matrix))
 
 def convertFromTreeToMatrix(node, size):
-    matrix = [[0 for _ in range(size)] for _ in range(size)]
+    matrix = [[255 for _ in range(size)] for _ in range(size)]
     def recover(node, x, y, size):
         nonlocal matrix
         if not node:
